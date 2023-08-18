@@ -127,6 +127,7 @@ def main():
     try:
         if check_for_update():
             log.info("WEBPAGE WAS CHANGED.")
+            # TODO: alert user of change somehow (email?)
         else:
             log.info("No update.")
     except:
@@ -135,4 +136,5 @@ def main():
 
 
 if __name__ == "__main__":
+    # TODO: check for existance of logging file and create if does not exist
     main()
