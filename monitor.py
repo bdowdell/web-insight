@@ -21,6 +21,7 @@ import requests
 import os
 import hashlib
 from bs4 import BeautifulSoup
+import logging
 
 
 URL_TO_MONITOR = "https://commencement.rice.edu/"
@@ -103,3 +104,35 @@ def check_for_update():
         with open("previous_hash.txt", "w") as file:
             file.write(current_hash)
         return True
+
+
+def main():
+    """
+    Define main program.
+
+    Returns
+    -------
+    None.
+
+    """
+    # instantiate logger
+    log = logging.getLogger(__name__)
+    logging.basicConfig(
+        level=os.environ.get("LOGLEVEL", "INFO"),
+        format='%(asctime)s %(message)s'
+    )
+    log.info("Running Website Monitor")
+
+    # check for changes
+    try:
+        if check_for_update():
+            log.info("WEBPAGE WAS CHANGED.")
+        else:
+            log.info("No update.")
+    except:
+        # potential network error
+        log.info("Error checking website.")
+
+
+if __name__ == "__main__":
+    main()
