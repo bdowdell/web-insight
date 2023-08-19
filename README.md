@@ -116,15 +116,16 @@ RECIEVER: my_personal_email@gmail.com
 
 ## Set up cron job
 
-1. Create cron job
+1. Create cron job.
     * Open crontab file for current user: `crontab -e`
     * Define environmental variables
-        * `SHELL=/usr/bin/bash`
-        * `PYTHON=/path/to/python`
-        * `HOME=/path/to/code/dir`
+        * If using `pyenv` + `venv`
+            * `SHELL=/usr/bin/bash`
+            * `HOME=/home/username`
+            * `CODE=/path/to/code/dir`
     * Add the crontab command, for example: 
 
-`22 */1 * * * $PYTHON $HOME/monitor.py`
+`22 */1 * * * $CODE/.venv/bin/python $CODE/monitor.py`
 
 This will run at minute 22 past every hour, every day.
 
