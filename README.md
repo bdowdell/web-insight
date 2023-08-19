@@ -29,7 +29,22 @@ URL_TO_MONITOR: https://www.google.com
 The following keys need to be specified:
 
 * `URL_TO_MONITOR`
-* ...
+* `PORT`
+* `HOST`
+* `SENDER`
+* `PASSWORD`
+* `RECEIVER`
+
+As an example, `.env` should appear as follows:
+
+```
+URL_TO_MONITOR: https://www.rice.edu
+PORT: 465
+HOST: smtp.gmail.com
+SENDER: my_dev_email@gmail.com
+PASSWORD: 12345dogdog
+RECIEVER: my_personal_email@gmail.com
+```
 
 
 ## Set up cron job
