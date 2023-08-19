@@ -22,7 +22,8 @@ import os
 import hashlib
 from bs4 import BeautifulSoup
 import logging
-import smtplib, ssl
+import smtplib
+import ssl
 import email
 
 
