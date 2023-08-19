@@ -22,6 +22,8 @@ import os
 import hashlib
 from bs4 import BeautifulSoup
 import logging
+import smtplib, ssl
+import email
 
 
 def process_html(string):
@@ -73,21 +75,25 @@ def get_secrets():
     """
     # instantiate an empty dictionary
     secrets_dict = {}
+
     # create a list to read env contents into
     secrets = []
+
     # read the secrets
     try:
         with open(".env", "r") as file:
             for line in file:
-                secrets.append(line)
+                secrets.append(line.strip())
     except:
         print("Could not find expected secrets file .env")
+
     # add the secrets to secrets_dict
     for secret in secrets:
         # split string on ': '
         split_secrets = secret.split(': ')
         key, value = split_secrets[0], split_secrets[1]
         secrets_dict[key] = value
+
     return secrets_dict    
 
 
@@ -137,6 +143,49 @@ def check_for_update(url_str):
         with open("previous_hash.txt", "w") as file:
             file.write(current_hash)
         return True
+    
+    
+def send_email(secrets):
+    """
+    Send email using environmental secrets.
+
+    Parameters
+    ----------
+    secrets : dict
+        Dictionary containing environmental secrets
+
+    Returns
+    -------
+    None.
+    """
+    # get necessary secrets
+    url = secrets["URL_TO_MONITOR"]
+    port = secrets["PORT"]
+    host = secrets["HOST"]
+    sender = secrets["SENDER"]
+    password = secrets["PASSWORD"]
+    receiver = secrets["RECEIVER"]
+    
+    # set the message
+    msg = email.message.Message()
+    msg['From'] = sender
+    msg['To'] = receiver
+    msg['Subject'] = ['Update detected']
+    msg.add_header('Content-Type', 'text')
+    message = f'A change in the webpage {url} has been detected.'
+    msg.set_payload(message)
+    
+    # create a context
+    context = ssl.create_default_context()
+    
+    # open connection and send email
+    with smtplib.SMTP_SSL(host, port, context=context) as server:
+        server.login(sender, password)
+        server.sendmail(
+            from_addr=msg['From'], 
+            to_addrs=[msg['To']],
+            msg=msg.get_payload()
+        )
 
 
 def main(secrets):
@@ -165,7 +214,8 @@ def main(secrets):
     try:
         if check_for_update(secrets["URL_TO_MONITOR"]):
             log.info("WEBPAGE WAS CHANGED.")
-            # TODO: alert user of change somehow (email?)
+            # alert user of change via email
+            send_email(secrets)
         else:
             log.info("No update.")
     except:
