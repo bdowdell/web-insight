@@ -171,6 +171,7 @@ def send_email(secrets):
     msg = email.message.Message()
     msg['From'] = sender
     msg['To'] = receiver
+    msg['X-Priority'] = '1'
     msg['Subject'] = 'UPDATE DETECTED!!!'
     msg.add_header('Content-Type', 'text')
     message = f'A change in the webpage {url} has been detected.'
