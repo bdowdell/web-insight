@@ -203,28 +203,29 @@ def main(secrets):
 
     """
     # instantiate logger
-    log = logging.getLogger(__name__)
+    # log = logging.getLogger(__name__)
     logging.basicConfig(
+        filename='monitor.log',
+        encoding='utf-8',
         level=os.environ.get("LOGLEVEL", "INFO"),
         format='%(asctime)s %(message)s'
     )
-    log.info("Running Website Monitor")
+    logging.info("Running Website Monitor")
 
     # check for changes
     try:
         if check_for_update(secrets["URL_TO_MONITOR"]):
-            log.info("WEBPAGE WAS CHANGED.")
+            logging.info("WEBPAGE WAS CHANGED.")
             # alert user of change via email
             send_email(secrets)
         else:
-            log.info("No update.")
+            logging.info("No update.")
     except:
         # potential network error
-        log.info("Error checking website.")
+        logging.info("Error checking website.")
 
 
 if __name__ == "__main__":
     # get secrets from environmental .env file
     secrets = get_secrets()
-    # TODO: check for existance of logging file and create if does not exist
     main(secrets)
