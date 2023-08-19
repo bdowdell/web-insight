@@ -4,7 +4,7 @@ Checks for changes in a given URL website
 ## Contents
 
 1. [Python Environment Set-Up](#python-environment-set-up)
-1. [.env secrets set-up](#.env-secrets-set-up)
+1. [.env secrets set-up](#env-secrets-set-up)
 1. [Set up cron job](#set-up-cron-job)
 
 ## Python Environment Set-Up
