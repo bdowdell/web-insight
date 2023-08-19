@@ -24,9 +24,6 @@ from bs4 import BeautifulSoup
 import logging
 
 
-# URL_TO_MONITOR = "https://commencement.rice.edu/"
-
-
 def process_html(string):
     """
     Extract text out of tags using beautiful-soup.
