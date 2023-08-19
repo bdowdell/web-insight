@@ -170,7 +170,7 @@ def send_email(secrets):
     msg = email.message.Message()
     msg['From'] = sender
     msg['To'] = receiver
-    msg['Subject'] = ['Update detected']
+    msg['Subject'] = 'UPDATE DETECTED!!!'
     msg.add_header('Content-Type', 'text')
     message = f'A change in the webpage {url} has been detected.'
     msg.set_payload(message)
@@ -181,11 +181,8 @@ def send_email(secrets):
     # open connection and send email
     with smtplib.SMTP_SSL(host, port, context=context) as server:
         server.login(sender, password)
-        server.sendmail(
-            from_addr=msg['From'], 
-            to_addrs=[msg['To']],
-            msg=msg.get_payload()
-        )
+        # https://stackoverflow.com/a/58318206
+        server.send_message(msg)
 
 
 def main(secrets):
