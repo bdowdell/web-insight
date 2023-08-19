@@ -24,7 +24,7 @@ from bs4 import BeautifulSoup
 import logging
 
 
-URL_TO_MONITOR = "https://commencement.rice.edu/"
+# URL_TO_MONITOR = "https://commencement.rice.edu/"
 
 
 def process_html(string):
@@ -37,7 +37,7 @@ def process_html(string):
 
     Parameters
     ----------
-    string : TYPE
+    string : str
         string text from requests.get().text
 
     Returns
@@ -63,9 +63,45 @@ def process_html(string):
     return str(soup).replace('\r', '')
 
 
-def check_for_update():
+def get_secrets():
+    """
+    Read environmental secrets from .env file.
+    
+    Expects each line of .env to be of the form key: value
+    ex: URL_TO_MONITOR: https://www.google.com
+
+    Returns
+    -------
+    Diciontary
+    """
+    # instantiate an empty dictionary
+    secrets_dict = {}
+    # create a list to read env contents into
+    secrets = []
+    # read the secrets
+    try:
+        with open(".env", "r") as file:
+            for line in file:
+                secrets.append(line)
+    except:
+        print("Could not find expected secrets file .env")
+    # add the secrets to secrets_dict
+    for secret in secrets:
+        # split string on ': '
+        split_secrets = secret.split(': ')
+        key, value = split_secrets[0], split_secrets[1]
+        secrets_dict[key] = value
+    return secrets_dict    
+
+
+def check_for_update(url_str):
     """
     Determine whether a webpage has been updated.
+    
+    Parameters
+    ----------
+    url_str : str
+        string of web page url for monitoring
 
     Returns
     -------
@@ -79,7 +115,7 @@ def check_for_update():
     }
 
     # get current html content
-    response = requests.get(URL_TO_MONITOR, headers=headers)
+    response = requests.get(url_str, headers=headers)
 
     # create previous_hash.txt file if it doesn't exist
     if not os.path.exists("previous_hash.txt"):
@@ -106,9 +142,14 @@ def check_for_update():
         return True
 
 
-def main():
+def main(secrets):
     """
     Define main program.
+    
+    Parameters
+    ----------
+    secrets : dict
+        dictionary containing environmental secrets
 
     Returns
     -------
@@ -125,7 +166,7 @@ def main():
 
     # check for changes
     try:
-        if check_for_update():
+        if check_for_update(secrets["URL_TO_MONITOR"]):
             log.info("WEBPAGE WAS CHANGED.")
             # TODO: alert user of change somehow (email?)
         else:
@@ -136,5 +177,7 @@ def main():
 
 
 if __name__ == "__main__":
+    # get secrets from environmental .env file
+    secrets = get_secrets()
     # TODO: check for existance of logging file and create if does not exist
-    main()
+    main(secrets)
