@@ -9,10 +9,77 @@ Checks for changes in a given URL website
 
 ## Python Environment Set-Up
 
-1. Create a Python 3.11.4 virtual environment
-    * conda: `conda create -n web_insight python=3.11.4`
-    * venv: ...
+### Option 1: conda
+
+1. Create a Python 3.11.4 virtual environment: `conda create -n web_insight python=3.11.4`
 1. Install required packages: `pip install -r requirements.txt`
+
+### Option 2: pyenv + venv + pip
+
+The following instructions for setting up a virtual environment assume you are using Linux (or Windows Subsystem for Linux 2), and specifically, Ubuntu 20.04.6 LTS. The overall sequence of steps are:
+
+1. Install and set-up `pyenv` for managing different python versions
+2. Clone the `web-insight` repository
+3. Set-up a new virtual environment using `venv`
+4. Install required packages using `pip` and the `requirements.txt` file
+
+**Note**: Prior to installing anything, ensure your Ubuntu is up-to-date. Open a terminal and:
+
+```
+$ sudo apt update
+$ sudo apt upgrade
+```
+
+*The following steps are all completed from within a terminal*
+
+#### Step 1: Install and set-up `pyenv`
+
+For full details, please refer to the `pyenv` [github repository](https://github.com/pyenv/pyenv#getting-pyenv). The steps are as follows:
+
+1. Ensure you are in your home directory: `$ cd`
+2. Clone the `pyenv` repository: `$ git clone https://github.com/pyenv/pyenv.git ~/.pyenv`
+3. Set up your shell for Pyenv:
+    * `$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc`
+    * `$ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc`
+    * `$ echo 'eval "$(pyenv init -)"' >> ~/.bashrc`
+4. Repeat the above for `.profile`:
+    * `$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile`
+    * `$ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile`
+    * `$ echo 'eval "$(pyenv init -)"' >> ~/.profile`
+5. Restart the shell: `$ exec "$SHELL"`
+6. Install necessary Python build dependencies:
+
+```
+$ sudo apt update; sudo apt install build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev curl \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+```
+7. Install python version 3.11.4: `$ pyenv install 3.11.4`
+
+*Note*: This will take a few minutes. Be patient, the process is not hung. 
+
+#### Step 2: Clone the repository
+
+1. `$ git clone https://github.com/bdowdell/web-insight.git`
+
+
+#### Step 3: Set-up `venv`
+
+1. Change into the cloned repository: `$ cd web-insight`
+2. Set the local python version: `$ pyenv local 3.11.4` $\leftarrow$ includes `venv` so we don't need to install first
+3. Confirm the change: `$ python --version`
+4. Create a virtual environment: `python -m venv .venv`
+5. Activate the virtual environment: `$ source .venv/bin/activate`
+6. When you are done working, *remember to deactivate the environment*: `$ deactivate`
+
+#### Step 4: Install required packages
+
+1. Update pip: `$ pip install pip update`
+1. With the virtual environment active: `$ pip install -r requirements.txt`
+
+*Note*: This will take a few minutes.
+
+Your environment is now ready.
 
 ## .env secrets set-up
 
@@ -49,9 +116,6 @@ RECIEVER: my_personal_email@gmail.com
 
 ## Set up cron job
 
-1. Create logging file
-    * `sudo touch /var/log/web_monitor.log`
-    * `sudo chown o+w /var/log/web_monitor.log`
 1. Create cron job
     * Open crontab file for current user: `crontab -e`
     * Define environmental variables
@@ -60,7 +124,7 @@ RECIEVER: my_personal_email@gmail.com
         * `HOME=/path/to/code/dir`
     * Add the crontab command, for example: 
 
-`22 */1 * * * $PYTHON $HOME/monitor.py >> /var/log/web_monitor.log 2>&1`
+`22 */1 * * * $PYTHON $HOME/monitor.py`
 
 This will run at minute 22 past every hour, every day.
 
