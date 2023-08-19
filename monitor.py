@@ -227,7 +227,8 @@ def main(secrets):
 
 if __name__ == "__main__":
     # set working directory
-    os.chdir(os.getcwd())
+    working_dir = os.path.realpath(os.path.dirname(__file__))
+    os.chdir(working_dir)
     # get secrets from environmental .env file
     secrets = get_secrets()
     main(secrets)
