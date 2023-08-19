@@ -9,12 +9,7 @@ Checks for changes in a given URL website
 
 ## Python Environment Set-Up
 
-### Option 1: conda
-
-1. Create a Python 3.11.4 virtual environment: `conda create -n web_insight python=3.11.4`
-1. Install required packages: `pip install -r requirements.txt`
-
-### Option 2: pyenv + venv + pip
+### Option 1: pyenv + venv + pip (preferred)
 
 The following instructions for setting up a virtual environment assume you are using Linux (or Windows Subsystem for Linux 2), and specifically, Ubuntu 20.04.6 LTS. The overall sequence of steps are:
 
@@ -81,6 +76,16 @@ libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-d
 
 Your environment is now ready.
 
+
+### Option 2: conda
+
+This method requires installing either Anaconda or Miniconda. This method
+is less preferred because the environment is open to other projects and
+is not self-contained.
+
+1. Create a Python 3.11.4 virtual environment: `conda create -n web_insight python=3.11.4`
+1. Install required packages: `pip install -r requirements.txt`
+
 ## .env secrets set-up
 
 The .env file is not tracked by git, so any secrets placed inside are safe.
@@ -123,9 +128,16 @@ RECIEVER: my_personal_email@gmail.com
             * `SHELL=/usr/bin/bash`
             * `HOME=/home/username`
             * `CODE=/path/to/code/dir`
+        * If using `conda`
+            * `SHELL=/usr/bin/bash`
+            * `HOME=/home/username`
+            * `PYTHON=/home/username/anaconda3/envs/web-insight/python`
+            * `CODE=/path/to/code/dir`
     * Add the crontab command, for example: 
-
-`22 */1 * * * $CODE/.venv/bin/python $CODE/monitor.py`
+        * `pyenv` + `venv`:
+            * `22 */1 * * * $CODE/.venv/bin/python $CODE/monitor.py`
+        * `conda`:
+            * `22 */1 * * * $PYTHON $CODE/monitor.py`
 
 This will run at minute 22 past every hour, every day.
 
