@@ -72,7 +72,7 @@ def get_secrets():
 
     Returns
     -------
-    Diciontary
+    Dictionary
     """
     # instantiate an empty dictionary
     secrets_dict = {}
