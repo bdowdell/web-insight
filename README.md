@@ -11,7 +11,7 @@ Checks for changes in a given URL website
 1. Create a Python 3.11.4 virtual environment
     * conda: `conda create -n web_insight python=3.11.4`
     * venv: ...
-1. Install required packages: `pip install requirements.txt`
+1. Install required packages: `pip install -r requirements.txt`
 1. Create logging file
     * `sudo touch /var/log/web_monitor.log`
     * `sudo chown o+w /var/log/web_monitor.log`
