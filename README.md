@@ -123,13 +123,14 @@ RECIEVER: my_personal_email@gmail.com
 
 1. Create cron job.
     * Open crontab file for current user: `crontab -e`
+    * confirm shell path: `which bash`
     * Define environmental variables
         * If using `pyenv` + `venv`
-            * `SHELL=/usr/bin/bash`
+            * `SHELL=/usr/bin/bash` <-- use path from `which bash`
             * `HOME=/home/username`
             * `CODE=/path/to/code/dir`
         * If using `conda`
-            * `SHELL=/usr/bin/bash`
+            * `SHELL=/usr/bin/bash` <-- use path from `which bash`
             * `HOME=/home/username`
             * `PYTHON=/home/username/anaconda3/envs/web-insight/python`
             * `CODE=/path/to/code/dir`
