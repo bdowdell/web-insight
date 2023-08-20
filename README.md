@@ -136,9 +136,11 @@ RECIEVER: my_personal_email@gmail.com
             * `CODE=/path/to/code/dir`
     * Add the crontab command, for example: 
         * `pyenv` + `venv`:
-            * `22 */1 * * * $CODE/.venv/bin/python $CODE/monitor.py`
+            * `22 */1 * * * $CODE/.venv/bin/python $CODE/monitor.py >> $CODE/monitor.err 2>&1`
         * `conda`:
-            * `22 */1 * * * $PYTHON $CODE/monitor.py`
+            * `22 */1 * * * $PYTHON $CODE/monitor.py >> $CODE/monitor.err 2>&1`
 
 This will run at minute 22 past every hour, every day.
+Note: the output redirect to `$CODE/monitor.err` will log any errors in
+executing the cronjob.
 
